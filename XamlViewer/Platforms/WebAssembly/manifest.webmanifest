@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "XamlViewer",
+  "display": "standalone",
+  "name": "XamlViewer",
+  "short_name": "XamlViewer",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

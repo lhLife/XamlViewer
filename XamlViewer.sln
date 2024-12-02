@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlViewer", "XamlViewer\XamlViewer.csproj", "{F331A6CF-2558-41D3-903C-61367F874502}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6618609F-D6B6-4D1F-9277-7C891F1F0B4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlViewer.UITests", "XamlViewer.UITests\XamlViewer.UITests.csproj", "{CA89CC6C-034F-4247-BBDC-713A57F97F22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlViewer.Tests", "XamlViewer.Tests\XamlViewer.Tests.csproj", "{2435C58E-C49C-4225-955A-CB733561267D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BE2200DF-C92E-42B3-9F00-E643B2FCF920}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+		NuGet.config = NuGet.config
+		Settings.XamlStyler = Settings.XamlStyler
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F331A6CF-2558-41D3-903C-61367F874502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F331A6CF-2558-41D3-903C-61367F874502}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F331A6CF-2558-41D3-903C-61367F874502}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F331A6CF-2558-41D3-903C-61367F874502}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F331A6CF-2558-41D3-903C-61367F874502}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F331A6CF-2558-41D3-903C-61367F874502}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CA89CC6C-034F-4247-BBDC-713A57F97F22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA89CC6C-034F-4247-BBDC-713A57F97F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA89CC6C-034F-4247-BBDC-713A57F97F22}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CA89CC6C-034F-4247-BBDC-713A57F97F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA89CC6C-034F-4247-BBDC-713A57F97F22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA89CC6C-034F-4247-BBDC-713A57F97F22}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{2435C58E-C49C-4225-955A-CB733561267D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2435C58E-C49C-4225-955A-CB733561267D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2435C58E-C49C-4225-955A-CB733561267D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2435C58E-C49C-4225-955A-CB733561267D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2435C58E-C49C-4225-955A-CB733561267D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2435C58E-C49C-4225-955A-CB733561267D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CA89CC6C-034F-4247-BBDC-713A57F97F22} = {6618609F-D6B6-4D1F-9277-7C891F1F0B4D}
+		{2435C58E-C49C-4225-955A-CB733561267D} = {6618609F-D6B6-4D1F-9277-7C891F1F0B4D}
+	EndGlobalSection
+EndGlobal
