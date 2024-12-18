@@ -1,20 +1,25 @@
-﻿<Application x:Class="XamlViewer.App"
-       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-       xmlns:converters="using:XamlViewer.Converters">
+﻿<Application x:Class="XamlViewer.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="using:CommunityToolkit.WinUI.Converters"
+             xmlns:lconverters="using:XamlViewer.Converters" xmlns:sys="using:Microsoft.UI.Xaml"
+             xmlns:sysc="using:Microsoft.UI.Xaml.Controls">
 
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <!-- Load WinUI resources -->
+        <!--  Load WinUI resources  -->
         <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
-        <!-- Load Uno.UI.Toolkit resources -->
+        <!--  Load Uno.UI.Toolkit resources  -->
         <ToolkitResources xmlns="using:Uno.Toolkit.UI" />
       </ResourceDictionary.MergedDictionaries>
-      <converters:PercentageConverter x:Key="PercentageConverter" />
-
-      <!-- Add resources here -->
-
+      <!--  Add resources here  -->
+      <x:Double x:Key="DoublePositiveInfinity">PositiveInfinity</x:Double>
+      <sys:Visibility x:Key="Visible">Visible</sys:Visibility>
+      <sys:Visibility x:Key="Collapsed">Collapsed</sys:Visibility>
+      <converters:CollectionVisibilityConverter x:Key="CollectionVisibilityConverter" />
+      <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+      <converters:EmptyObjectToObjectConverter x:Key="EmptyObjectToVisibilityConverter" EmptyValue="{StaticResource Collapsed}" NotEmptyValue="{StaticResource Visible}" />
+      <lconverters:PercentageConverter x:Key="PercentageConverter" />
     </ResourceDictionary>
   </Application.Resources>
 

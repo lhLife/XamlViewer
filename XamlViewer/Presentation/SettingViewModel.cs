@@ -9,21 +9,6 @@ public partial class SettingViewModel : ObservableObject
     private readonly INavigator navigator;
     private readonly IWritableOptions<AppSettings> writePackageSettings;
 
-    //public PackageInclude[] Packages
-    //{
-    //    get;
-    //    set => SetProperty(ref field, value);
-    //}
-
-
-    //[ObservableProperty]
-    //private ObservableCollection<PackageInclude> packages = new ObservableCollection<PackageInclude>();
-
-    public ObservableCollection<PackageEntity> Packages
-    {
-        get => field;
-        set => SetProperty(ref field, value);
-    }
 
 
 
@@ -40,6 +25,19 @@ public partial class SettingViewModel : ObservableObject
 
     }
 
+
+
+    #region 绑定属性
+
+    public ObservableCollection<PackageEntity> Packages
+    {
+        get => field;
+        set => SetProperty(ref field, value);
+    }
+    #endregion
+
+
+    #region 执行命令
 
     [RelayCommand]
     public async Task AddPackageAsync()
@@ -66,4 +64,13 @@ public partial class SettingViewModel : ObservableObject
 
         await writePackageSettings.UpdateAsync(a => a with { Packages = this.Packages.ToArray() });
     }
+
+
+    [RelayCommand]
+    public async Task SearchPackageAsync()
+    {
+        await this.navigator.NavigateViewModelAsync<SearchPackageViewModel>(this, qualifier: Qualifiers.None);
+    }
+
+    #endregion
 }

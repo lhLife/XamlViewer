@@ -29,7 +29,7 @@
     <StackPanel Grid.Row="1" Margin="20" Spacing="10">
       <TextBox x:Name="name" Header="包名称" Text="{Binding Name, Mode=TwoWay}" />
       <TextBox x:Name="version" Header="版本号" Text="{Binding Version, Mode=TwoWay}" />
-      <TextBox x:Name="search" Header="DLL文件路径" Text="{Binding Search, Mode=TwoWay}" />
+      <TextBox x:Name="dir" Header="DLL文件目录" Text="{Binding Dir, Mode=TwoWay}" />
       <!--<Button Content="确认" uen:Navigation.Request="-" uen:Navigation.Data="{Binding PackageInclude}"/>-->
     </StackPanel>
   </Grid>

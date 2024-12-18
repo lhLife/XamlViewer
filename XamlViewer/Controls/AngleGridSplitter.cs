@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Input;
 
 namespace XamlViewer.Controls;
 
-public class AngleGridSplitter : GridSplitter
+public partial class AngleGridSplitter : GridSplitter
 {
 
     public double Angle

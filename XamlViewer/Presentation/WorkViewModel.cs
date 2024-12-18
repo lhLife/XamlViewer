@@ -61,11 +61,12 @@ public partial class WorkViewModel : ObservableObject, IDisposable
     public string? EditText
     {
         get => this.entity.Text;
-        set
-        {
-            if (SetProperty(this.entity.Text, value, this.entity, (e, n) => e.Text = n))
-                _ = this.ReaderXamlAsync();
-        }
+        //set
+        //{
+        //    if (SetProperty(this.entity.Text, value, this.entity, (e, n) => e.Text = n))
+        //        _ = this.ReaderXamlAsync();
+        //}
+        set => SetProperty(this.entity.Text, value, this.entity, (e, n) => e.Text = n);
     }
 
     public string? JsonText
@@ -193,6 +194,11 @@ public partial class WorkViewModel : ObservableObject, IDisposable
         this.DesignerRow = this.EditorRow;
         this.EditorRow = r;
     }
+
+
+    //[RelayCommand]
+    //public void EditTextFastChanged(string text) => this.EditText = text;
+
 
     #endregion
 

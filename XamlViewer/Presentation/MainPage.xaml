@@ -19,14 +19,26 @@
         </Grid.RowDefinitions>
         <CommandBar Grid.Row="0" DefaultLabelPosition="Right" IsDynamicOverflowEnabled="False">
 
-            <AppBarButton Command="{Binding ReaderXamlCommand}" Icon="Play" Label="运行" AllowFocusOnInteraction="True" />
+            <AppBarButton Command="{Binding ReaderXamlCommand}" Icon="Play" Label="运行" AllowFocusOnInteraction="True">
+                <AppBarButton.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="F5" />
+                </AppBarButton.KeyboardAccelerators>
+            </AppBarButton>
 
             <AppBarSeparator />
             <AppBarButton Icon="Add" Label="添加">
                 <AppBarButton.Flyout>
                     <MenuFlyout Placement="BottomEdgeAlignedLeft">
-                        <MenuFlyoutItem Command="{Binding AddCommand}" Text="快速添加" />
-                        <MenuFlyoutItem Command="{Binding AddFileCommand}" Text="添加文件" />
+                        <MenuFlyoutItem Command="{Binding AddCommand}" Text="快速添加">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="N" Modifiers="Control" />
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Command="{Binding AddFileCommand}" Text="添加文件">
+                            <MenuFlyoutItem.KeyboardAccelerators>
+                                <KeyboardAccelerator Key="N" Modifiers="Control,Shift" />
+                            </MenuFlyoutItem.KeyboardAccelerators>
+                        </MenuFlyoutItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

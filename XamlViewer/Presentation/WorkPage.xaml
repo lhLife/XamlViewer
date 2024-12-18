@@ -10,6 +10,8 @@
   xmlns:uen="using:Uno.Extensions.Navigation.UI"
   xmlns:ui="using:CommunityToolkit.WinUI"
   xmlns:utu="using:Uno.Toolkit.UI"
+  xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+  xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
@@ -85,9 +87,9 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBox Grid.Row="0" AcceptsReturn="True" IsSpellCheckEnabled="False" Text="{Binding EditText, Mode=TwoWay}" TextWrapping="Wrap" PlaceholderText="xaml 编辑" ToolTipService.ToolTip="xaml 编辑" Visibility="{Binding IsSelected,ElementName=xamlEditerShow}" />
+                        <TextBox Grid.Row="0" AcceptsReturn="True" IsSpellCheckEnabled="False" Text="{Binding EditText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" PlaceholderText="xaml 编辑" Visibility="{Binding IsSelected,ElementName=xamlEditerShow}" />
 
-                        <TextBox Grid.Row="0" AcceptsReturn="True" IsSpellCheckEnabled="False" Text="{Binding JsonText, Mode=TwoWay}" TextWrapping="Wrap" PlaceholderText="json 数据"  ToolTipService.ToolTip="json 数据" Visibility="{Binding IsSelected,ElementName=jsonEditerShow}" />
+                        <TextBox Grid.Row="0" AcceptsReturn="True" IsSpellCheckEnabled="False" Text="{Binding JsonText, Mode=TwoWay}" TextWrapping="Wrap" PlaceholderText="json 数据" Visibility="{Binding IsSelected,ElementName=jsonEditerShow}" />
                         <SelectorBar Grid.Row="1" Margin="0" Padding="0">
                             <SelectorBarItem x:Name="xamlEditerShow" Text="编辑" IsSelected="True"/>
                             <SelectorBarItem x:Name="jsonEditerShow" Text="数据" />

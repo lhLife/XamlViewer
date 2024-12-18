@@ -20,4 +20,5 @@ public sealed partial class WorkPage : Page
 
         this.Log()?.LogDebug($" {this.content.ZoomFactor}");
     }
+
 }

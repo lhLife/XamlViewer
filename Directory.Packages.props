@@ -14,7 +14,7 @@
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="Uno.UITest.Helpers" Version="1.1.0-dev.70" />
     <PackageVersion Include="Xamarin.UITest" Version="4.3.4" />
-
+    <PackageVersion Include="CommunityToolkit.WinUI.Triggers" Version="8.1.240916" />
     <PackageVersion Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240916" />
     <PackageVersion Include="CommunityToolkit.WinUI.Helpers" Version="8.1.240916" />
     <PackageVersion Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240916" />
@@ -24,9 +24,14 @@
     <PackageVersion Include="CommunityToolkit.WinUI.Controls.LayoutTransformControl" Version="8.1.240916" />
     <!--<PackageVersion Include="CommunityToolkit.Labs.WinUI.Controls.DataTable" Version="0.1.241113-build.1784" />-->
     <PackageVersion Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
-
-
+    <PackageVersion Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
     <PackageVersion Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageVersion Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.4.2" />
+    <PackageVersion Include="CommunityToolkit.WinUI.Controls.ListDetailsView" Version="1.0.0" />
+    <PackageVersion Include="CommunityToolkit.WinUI.Controls.DataTable" Version="1.0.0" />
+      
+    <!--nuget 包-->
+    <PackageVersion Include="NuGet.Configuration" Version="6.12.1" />
+    <PackageVersion Include="NuGet.Protocol" Version="6.12.1" />
   </ItemGroup>
 </Project>

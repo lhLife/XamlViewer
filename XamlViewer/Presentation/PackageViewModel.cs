@@ -47,10 +47,10 @@ public partial class PackageViewModel : ObservableObject
         get => this.PackageInclude.Version;
         set => SetProperty(field, value, this.PackageInclude, (a, b) => this.PackageInclude.Version = value);
     }
-    public string? Search
+    public string? Dir
     {
-        get => this.PackageInclude.Search;
-        set => SetProperty(field, value, this.PackageInclude, (a, b) => this.PackageInclude.Search = value);
+        get => this.PackageInclude.Dir;
+        set => SetProperty(field, value, this.PackageInclude, (a, b) => this.PackageInclude.Dir = value);
     }
 
 

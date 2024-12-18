@@ -24,10 +24,11 @@
     </utu:NavigationBar>
     <ListView Grid.Row="1" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" ItemsSource="{Binding Packages}">
       <ListView.Header>
-        <StackPanel Padding="10,0" Orientation="Horizontal" Spacing="10">
+        <StackPanel Padding="10,0" Orientation="Horizontal" Spacing="5">
           <TextBlock VerticalAlignment="Center" Text="添加包版本" />
           <!--<Button Content="{ui:FontIcon FontFamily={StaticResource SymbolThemeFontFamily}, Glyph='&#xE710;'}" BorderBrush="Transparent"/>-->
-          <AppBarButton Command="{Binding AddPackageCommand}" Icon="{ui:FontIcon FontFamily={StaticResource SymbolThemeFontFamily}, Glyph='&#xE710;'}" LabelPosition="Collapsed" />
+          <AppBarButton Command="{Binding AddPackageCommand}" Icon="{ui:FontIcon FontFamily={StaticResource SymbolThemeFontFamily}, Glyph='&#xE710;'}" LabelPosition="Collapsed" Label="添加包" />
+          <AppBarButton Command="{Binding SearchPackageCommand}" Icon="{ui:FontIcon FontFamily={StaticResource SymbolThemeFontFamily}, Glyph='&#xE721;'}" LabelPosition="Collapsed" Label="查找包" />
         </StackPanel>
       </ListView.Header>
       <ListView.ItemTemplate>
@@ -41,7 +42,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="{x:Bind Name}" />
             <TextBlock Grid.Column="1" Text="{x:Bind Version}" />
-            <TextBlock Grid.Column="2" Text="{x:Bind Search}" />
+            <TextBlock Grid.Column="2" Text="{x:Bind Dir}" />
             <StackPanel Grid.Column="3" Orientation="Horizontal">
 
               <HyperlinkButton

@@ -2,7 +2,8 @@
     <PropertyGroup>
         <!--<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst;net9.0-windows10.0.26100;net9.0-browserwasm;net9.0-desktop;net9.0</TargetFrameworks>-->
         <TargetFrameworks>net9.0-desktop</TargetFrameworks>
-
+        <!--<TargetFrameworks>net9.0-windows10.0.26100</TargetFrameworks>-->
+        <!--<TargetFrameworks>net9.0-android</TargetFrameworks>-->
         <OutputType>Exe</OutputType>
         <UnoSingleProject>true</UnoSingleProject>
 
@@ -57,6 +58,7 @@
         <EmbeddedResource Include="Assets\*.xml" />
     </ItemGroup>
 
+
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.WinUI.Helpers" />
         <PackageReference Include="CommunityToolkit.WinUI.Extensions" />
@@ -65,10 +67,18 @@
         <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.LayoutTransformControl" />
         <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" />
+        <PackageReference Include="CommunityToolkit.WinUI.Converters" />
+        <!--<PackageReference Include="CommunityToolkit.WinUI.Controls.ListDetailsView" />-->
+        <!--<PackageReference Include="CommunityToolkit.WinUI.Controls.DataTable" />-->
+        <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
+
 
         <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" Condition=" $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'windows' " />
         <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Condition=" $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows' " />
-        
+
+
+        <PackageReference Include="NuGet.Configuration" />
+        <PackageReference Include="NuGet.Protocol" />
     </ItemGroup>
 
 </Project>

@@ -13,6 +13,6 @@
         <NoWarn>$(NoWarn);NU1507;NETSDK1201;PRI257</NoWarn>
 
         <LangVersion>preview</LangVersion>
-        <CommunityToolkitMvvmVersion>8.4.0-preview2</CommunityToolkitMvvmVersion>
+        <CommunityToolkitMvvmVersion>8.4.0</CommunityToolkitMvvmVersion>
     </PropertyGroup>
 </Project>
