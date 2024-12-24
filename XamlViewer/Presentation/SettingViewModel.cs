@@ -42,7 +42,7 @@ public partial class SettingViewModel : ObservableObject
     [RelayCommand]
     public async Task AddPackageAsync()
     {
-        var response = await this.navigator.NavigateViewModelForResultAsync<PackageViewModel, PackageEntity>(this, qualifier: Qualifiers.Dialog, data: null);
+        var response = await this.navigator.NavigateViewModelForResultAsync<PackageInfoViewModel, PackageEntity>(this, qualifier: Qualifiers.Dialog, data: null);
 
         var option = await response!.Result;
         var result = option.SomeOrDefault();

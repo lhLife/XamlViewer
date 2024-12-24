@@ -1,6 +1,3 @@
-using CommunityToolkit.WinUI.Controls;
-using Microsoft.UI.Xaml.Input;
-
 namespace XamlViewer.Controls;
 
 public partial class AngleGridSplitter : GridSplitter

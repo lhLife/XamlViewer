@@ -73,12 +73,23 @@
         <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
 
 
-        <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" Condition=" $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'windows' " />
-        <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Condition=" $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows' " />
-
-
         <PackageReference Include="NuGet.Configuration" />
         <PackageReference Include="NuGet.Protocol" />
     </ItemGroup>
+
+    <ItemGroup Condition=" $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'windows' ">
+        <PackageReference Include="Uno.Microsoft.Xaml.Behaviors.WinUI.Managed" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" $([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows' ">
+        <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Presentation\PackageInfoDialog.xaml.cs">
+        <DependentUpon>PackageInfoDialog.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 
 </Project>

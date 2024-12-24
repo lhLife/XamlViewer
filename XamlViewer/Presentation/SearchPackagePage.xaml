@@ -8,6 +8,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:nuget="using:NuGet.Protocol.Core.Types" xmlns:ui="using:CommunityToolkit.WinUI"
       xmlns:utu="using:Uno.Toolkit.UI"
+      xmlns:sys="using:System"
+      xmlns:lc="using:XamlViewer.Controls"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       mc:Ignorable="d">
   <Grid Padding="10">
@@ -21,19 +23,15 @@
         <AppBarButton x:Name="navbtn" Icon="Back" />
       </utu:NavigationBar.MainCommand>
     </utu:NavigationBar>
-    <Grid Grid.Row="1">
+    <Grid Grid.Row="1" x:Name="ttt">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
 
-      <TextBox Grid.Column="0" Width="300" AcceptsReturn="False"
-               CandidateWindowBoundsChanged="TextBox_CandidateWindowBoundsChanged" PlaceholderText="包名称"
-               Text="{Binding PackageName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-               TextCompositionChanged="TextBox_TextCompositionChanged"
-               TextCompositionEnded="TextBox_TextCompositionEnded"
-               TextCompositionStarted="TextBox_TextCompositionStarted">
+      <TextBox Grid.Column="0" Width="300" AcceptsReturn="False" PlaceholderText="包名称"
+               Text="{Binding PackageName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         <TextBox.KeyboardAccelerators>
           <KeyboardAccelerator Key="Enter" Invoked="KeyboardAccelerator_Invoked" Modifiers="None" />
         </TextBox.KeyboardAccelerators>
@@ -200,10 +198,11 @@
     </controls:ListDetailsView>-->
 
     <TwoPaneView x:Name="MyTwoPaneView" Grid.Row="2"
+                  Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                  MinTallModeHeight="{StaticResource DoublePositiveInfinity}"
                  Pane1Length="*" PanePriority="Pane1">
       <TwoPaneView.Pane1>
-        <ListView Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+        <ListView
                   ItemsSource="{Binding Packages}"
                   SelectedItem="{Binding SelectedPackage, Mode=TwoWay}">
           <ListView.ItemTemplate>
@@ -348,6 +347,7 @@
                   <Run Text="{Binding SelectedPackage.ReportAbuseUrl}" />
                 </Hyperlink>
               </TextBlock>
+                
             </Grid>
 
             <TextBlock FontSize="13" FontWeight="Bold" Text="标签" />
@@ -372,8 +372,15 @@
         <VisualState x:Name="navigation_selected">
           <VisualState.StateTriggers>
             <!--  多条件触发？  -->
-            <ui:IsNotEqualStateTrigger Value="{Binding SelectedPackage, Mode=OneWay}" To="{x:Null}" />
-            <ui:IsEqualStateTrigger Value="{Binding Mode, ElementName=MyTwoPaneView, Mode=OneWay}" To="SinglePane" />
+              <!-- 1.自定义条件触发标签-->
+              <!-- 2.申明触发事件-->
+              <!-- 3.添加多触发条件标签-->
+              <!-- 4.注册事件触发时调用的方法-->
+              <!-- 5.判断多条件满足情况后执行触发器-->
+              <lc:CompositeStateTrigger>
+                  <lc:EqualsStateTrigger Value="{Binding Mode, ElementName=MyTwoPaneView, Mode=OneWay}" EqualTo="SinglePane" />
+                  <lc:NotEqualStateTrigger   Value="{Binding SelectedPackage, Mode=OneWay}" NotEqualTo="{x:Null}"  />
+              </lc:CompositeStateTrigger>
           </VisualState.StateTriggers>
           <VisualState.Setters>
             <Setter Target="nav.MainCommandMode" Value="Action" />

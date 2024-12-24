@@ -127,7 +127,7 @@ public partial class SearchPackageViewModel : ObservableObject
     {
         var versions = await this.SelectedPackage!.GetVersionsAsync();
 
-        this.Versions = new ObservableCollection<VersionInfo>(versions);
+        this.Versions = new ObservableCollection<VersionInfo>(versions.Reverse());
         this.IsShow = true;
     }
 
@@ -172,27 +172,27 @@ public partial class SearchPackageViewModel : ObservableObject
                 await result.PackageStream.CopyToAsync(fileStream);
 
 
-            var metadata = await sourceRepository.GetResourceAsync<MetadataResource>();
-            var vers = metadata.GetVersions(identity.Id, sourceCacheContext, NuGet.Common.NullLogger.Instance, CancellationToken.None);
+            //var metadata = await sourceRepository.GetResourceAsync<MetadataResource>();
+            //var vers = metadata.GetVersions(identity.Id, sourceCacheContext, NuGet.Common.NullLogger.Instance, CancellationToken.None);
 
         }
 
-        using (var stream = new FileStream(packagePath, FileMode.Open, FileAccess.Read))
-        {
-            using (PackageArchiveReader reader = new PackageArchiveReader(stream))
-            {
-                var nuspec = reader.NuspecReader;
-                var d = nuspec.GetContentFiles().ToList();
+        //using (var stream = new FileStream(packagePath, FileMode.Open, FileAccess.Read))
+        //{
+        //    using (PackageArchiveReader reader = new PackageArchiveReader(stream))
+        //    {
+        //        var nuspec = reader.NuspecReader;
+        //        var d = nuspec.GetContentFiles().ToList();
 
-                var items = reader.GetContentItems();
-            }
+        //        var items = reader.GetContentItems();
+        //    }
 
 
-            //using (var zip = new ZipArchive(stream))
-            //{
-            //    var content = zip.Entries.ToList();
-            //}
-        }
+        //    //using (var zip = new ZipArchive(stream))
+        //    //{
+        //    //    var content = zip.Entries.ToList();
+        //    //}
+        //}
 
 
     }

@@ -1,4 +1,4 @@
-﻿global using System.Collections.Immutable;
+global using System.Collections.Immutable;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
 global using Microsoft.Extensions.DependencyInjection;
@@ -12,4 +12,6 @@ global using XamlViewer.Models;
 global using XamlViewer.Presentation;
 global using XamlViewer.Services.Caching;
 global using XamlViewer.Services.Endpoints;
+global using Microsoft.UI.Xaml.Input;
+global using CommunityToolkit.WinUI.Controls;
 global using ApplicationExecutionState = Windows.ApplicationModel.Activation.ApplicationExecutionState;

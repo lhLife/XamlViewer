@@ -1,13 +1,13 @@
 using Uno.UI.HotDesign;
 
 namespace XamlViewer.Presentation;
-public partial class PackageViewModel : ObservableObject
+public partial class PackageInfoViewModel : ObservableObject
 {
     private readonly INavigator navigator;
 
     public PackageEntity PackageInclude { get; private set; }
 
-    public PackageViewModel(INavigator navigator, PackageEntity? packageInclude)
+    public PackageInfoViewModel(INavigator navigator, PackageEntity? packageInclude)
     {
         this.navigator = navigator;
         this.PackageInclude = packageInclude ?? new PackageEntity();

@@ -122,7 +122,7 @@ public partial class App : Application
             new ViewMap(ViewModel: typeof(ShellViewModel)),
             new ViewMap<MainPage, MainViewModel>(),
             new ViewMap<SettingPage, SettingViewModel>(),
-            new ViewMap<PackageDialog, PackageViewModel>(Data: new DataMap<PackageEntity>(), ResultData: typeof(PackageEntity)),
+            new ViewMap<PackageInfoDialog, PackageInfoViewModel>(Data: new DataMap<PackageEntity>(), ResultData: typeof(PackageEntity)),
             new ViewMap<SearchPackagePage, SearchPackageViewModel>()
         //new ViewMap<WorkPage, WorkViewModel>(Data: new DataMap<WorkEntity>())
 
@@ -132,10 +132,10 @@ public partial class App : Application
             new RouteMap("", View: views.FindByViewModel<ShellViewModel>(),
                 Nested:
                 [
-                    new ("Main", View: views.FindByViewModel<MainViewModel>(), IsDefault:false),
+                    new ("Main", View: views.FindByViewModel<MainViewModel>(), IsDefault:true),
                     new ("Settings",View:views.FindByViewModel<SettingViewModel>()),
-                    new ("Package",View:views.FindByViewModel<PackageViewModel>()),
-                    new ("SearchPackage",View:views.FindByViewModel<SearchPackageViewModel>(),IsDefault:true)
+                    new ("Package",View:views.FindByViewModel<PackageInfoViewModel>()),
+                    new ("SearchPackage",View:views.FindByViewModel<SearchPackageViewModel>(),IsDefault:false)
                     //new ("Work",View:views.FindByViewModel<WorkViewModel>())
                 ]
             )
