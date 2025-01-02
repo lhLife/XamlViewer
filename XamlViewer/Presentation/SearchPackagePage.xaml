@@ -4,12 +4,11 @@
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:core="using:Microsoft.Xaml.Interactions.Core"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:interactivity="using:Microsoft.Xaml.Interactivity" xmlns:local="using:XamlViewer.Presentation"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity" xmlns:lc="using:XamlViewer.Controls"
+      xmlns:local="using:XamlViewer.Presentation"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:nuget="using:NuGet.Protocol.Core.Types" xmlns:ui="using:CommunityToolkit.WinUI"
-      xmlns:utu="using:Uno.Toolkit.UI"
-      xmlns:sys="using:System"
-      xmlns:lc="using:XamlViewer.Controls"
+      xmlns:nuget="using:NuGet.Protocol.Core.Types" xmlns:sys="using:System"
+      xmlns:ui="using:CommunityToolkit.WinUI" xmlns:utu="using:Uno.Toolkit.UI"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       mc:Ignorable="d">
   <Grid Padding="10">
@@ -23,7 +22,7 @@
         <AppBarButton x:Name="navbtn" Icon="Back" />
       </utu:NavigationBar.MainCommand>
     </utu:NavigationBar>
-    <Grid Grid.Row="1" x:Name="ttt">
+    <Grid x:Name="ttt" Grid.Row="1">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="Auto" />
@@ -198,13 +197,17 @@
     </controls:ListDetailsView>-->
 
     <TwoPaneView x:Name="MyTwoPaneView" Grid.Row="2"
-                  Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                 Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                  MinTallModeHeight="{StaticResource DoublePositiveInfinity}"
                  Pane1Length="*" PanePriority="Pane1">
       <TwoPaneView.Pane1>
-        <ListView
-                  ItemsSource="{Binding Packages}"
-                  SelectedItem="{Binding SelectedPackage, Mode=TwoWay}">
+        <ListView x:Name="list" ItemsSource="{Binding Packages}" SelectedItem="{Binding SelectedPackage, Mode=TwoWay}">
+            <!-- ui 虚化 -->
+          <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+              <ItemsStackPanel Orientation="Vertical" />
+            </ItemsPanelTemplate>
+          </ListView.ItemsPanel>
           <ListView.ItemTemplate>
             <DataTemplate x:DataType="nuget:IPackageSearchMetadata">
               <Grid Padding="0,5" ColumnSpacing="5" RowSpacing="5">
@@ -347,7 +350,7 @@
                   <Run Text="{Binding SelectedPackage.ReportAbuseUrl}" />
                 </Hyperlink>
               </TextBlock>
-                
+
             </Grid>
 
             <TextBlock FontSize="13" FontWeight="Bold" Text="标签" />
@@ -372,15 +375,15 @@
         <VisualState x:Name="navigation_selected">
           <VisualState.StateTriggers>
             <!--  多条件触发？  -->
-              <!-- 1.自定义条件触发标签-->
-              <!-- 2.申明触发事件-->
-              <!-- 3.添加多触发条件标签-->
-              <!-- 4.注册事件触发时调用的方法-->
-              <!-- 5.判断多条件满足情况后执行触发器-->
-              <lc:CompositeStateTrigger>
-                  <lc:EqualsStateTrigger Value="{Binding Mode, ElementName=MyTwoPaneView, Mode=OneWay}" EqualTo="SinglePane" />
-                  <lc:NotEqualStateTrigger   Value="{Binding SelectedPackage, Mode=OneWay}" NotEqualTo="{x:Null}"  />
-              </lc:CompositeStateTrigger>
+            <!--  1.自定义条件触发标签  -->
+            <!--  2.申明触发事件  -->
+            <!--  3.添加多触发条件标签  -->
+            <!--  4.注册事件触发时调用的方法  -->
+            <!--  5.判断多条件满足情况后执行触发器  -->
+            <lc:CompositeStateTrigger Operator="And" DataContext="{Binding}">
+              <lc:NotEqualStateTrigger NotEqualTo="{x:Null}" Value="{Binding SelectedPackage, Mode=OneWay}" />
+              <lc:EqualsStateTrigger EqualTo="SinglePane" Value="{Binding Mode, ElementName=MyTwoPaneView, Mode=OneWay}" />
+            </lc:CompositeStateTrigger>
           </VisualState.StateTriggers>
           <VisualState.Setters>
             <Setter Target="nav.MainCommandMode" Value="Action" />

@@ -13,7 +13,7 @@
         <ToolkitResources xmlns="using:Uno.Toolkit.UI" />
       </ResourceDictionary.MergedDictionaries>
       <!--  Add resources here  -->
-      <x:Double x:Key="DoublePositiveInfinity">PositiveInfinity</x:Double>
+      <x:Double x:Key="DoublePositiveInfinity">1.7976931348623157E+308</x:Double>
       <sys:Visibility x:Key="Visible">Visible</sys:Visibility>
       <sys:Visibility x:Key="Collapsed">Collapsed</sys:Visibility>
       <converters:CollectionVisibilityConverter x:Key="CollectionVisibilityConverter" />

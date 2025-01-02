@@ -5,15 +5,16 @@ public partial class PackageInfoViewModel : ObservableObject
 {
     private readonly INavigator navigator;
 
-    public PackageEntity PackageInclude { get; private set; }
+    //public PackageEntity PackageInclude { get; private set; }
 
     public PackageInfoViewModel(INavigator navigator, PackageEntity? packageInclude)
     {
         this.navigator = navigator;
-        this.PackageInclude = packageInclude ?? new PackageEntity();
-        //this.Name = packageInclude?.Name;
-        //this.Version = packageInclude?.Version;
-        //this.Search = packageInclude?.Search;
+        //this.PackageInclude = packageInclude ?? new PackageEntity();
+        this.Name = packageInclude?.Name;
+        this.Version = packageInclude?.Version;
+        this.Dir = packageInclude?.Dir;
+        this.Framework = packageInclude?.Framework;
     }
 
     ////[Required]
@@ -35,24 +36,17 @@ public partial class PackageInfoViewModel : ObservableObject
     //private string search;
     ////public partial string Search { get; set; }
 
+    [ObservableProperty]
+    public partial string? Name { get; set; }
 
-    public string? Name
-    {
-        get => this.PackageInclude.Name;
-        set => SetProperty(field, value, this.PackageInclude, (a, b) => this.PackageInclude.Name = value);
-    }
+    [ObservableProperty]
+    public partial string? Version { get; set; }
 
-    public string? Version
-    {
-        get => this.PackageInclude.Version;
-        set => SetProperty(field, value, this.PackageInclude, (a, b) => this.PackageInclude.Version = value);
-    }
-    public string? Dir
-    {
-        get => this.PackageInclude.Dir;
-        set => SetProperty(field, value, this.PackageInclude, (a, b) => this.PackageInclude.Dir = value);
-    }
+    [ObservableProperty]
+    public partial string? Dir { get; set; }
 
+    [ObservableProperty]
+    public partial string? Framework { get; set; }
 
 
     [RelayCommand]
@@ -62,8 +56,8 @@ public partial class PackageInfoViewModel : ObservableObject
         //NavigatorFactory
 
         //await this.navigator.NavigateBackAsync(this);
-
-        await this.navigator.NavigateBackWithResultAsync(this, data: this.PackageInclude);
+        var data = new PackageEntity() { Name = this.Name, Version = this.Version, Dir = this.Dir, Framework = this.Framework };
+        await this.navigator.NavigateBackWithResultAsync(this, data: data);
 
 
     }

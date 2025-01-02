@@ -1,6 +1,10 @@
 
 using System.Collections.ObjectModel;
-using Newtonsoft.Json.Linq;
+using System.Reflection.Metadata;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
+using Uno.Extensions.Specialized;
 
 namespace XamlViewer.Presentation;
 
@@ -287,7 +291,8 @@ public partial class WorkViewModel : ObservableObject, IDisposable
 
         try
         {
-            var value = await File.ReadAllTextAsync(this.entity.Path!);
+
+            var value = File.ReadAllText(this.entity.Path!);
             this.EditText = value;
         }
         catch (IOException ioex)
@@ -308,6 +313,15 @@ public partial class WorkViewModel : ObservableObject, IDisposable
             object content = null;
             try
             {
+                //移除x:Class 属性，在winui3中存在时，报错问题
+#if !HAS_UNO_WINUI
+                var el = XDocument.Parse(text);
+                var attr = XName.Get("Class", "http://schemas.microsoft.com/winfx/2006/xaml");
+                el.XPathSelectElements("//*").ForEach(a => a.Attribute(attr)?.Remove());
+                text = el.ToString();
+#endif
+
+
                 content = await this.dispatcher.ExecuteAsync<object>((ct) => ValueTask.FromResult(Microsoft.UI.Xaml.Markup.XamlReader.Load(text)));
                 //if (content is FrameworkElement u) ui = u;
             }
@@ -318,6 +332,7 @@ public partial class WorkViewModel : ObservableObject, IDisposable
                     Text = ex.Message,
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center,
+                    TextWrapping = TextWrapping.WrapWholeWords
                 }));
 
             }

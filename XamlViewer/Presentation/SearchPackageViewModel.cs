@@ -3,7 +3,10 @@
 using System;
 using System.Collections.ObjectModel;
 using System.IO.Compression;
+using CommunityToolkit.Common.Collections;
+using CommunityToolkit.WinUI.Collections;
 using Microsoft.VisualBasic;
+using NuGet.Common;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Protocol;
@@ -12,14 +15,24 @@ using NuGet.Versioning;
 using Windows.ApplicationModel;
 
 namespace XamlViewer.Presentation;
-public partial class SearchPackageViewModel : ObservableObject
+public partial class SearchPackageViewModel : ObservableObject, CommunityToolkit.WinUI.Collections.IIncrementalSource<IPackageSearchMetadata>
+
 {
     private SourceRepository? sourceRepository;
+    private readonly IOptions<AppConfig> appConfig;
+    private readonly IWritableOptions<AppSettings> writePackageSettings;
+    private readonly INavigator navigator;
 
-    public SearchPackageViewModel()
+    public SearchPackageViewModel(
+        IOptions<AppConfig> appConfig,
+        IWritableOptions<AppSettings> writePackageSettings,
+        INavigator navigator)
     {
 
         _ = InitializeAsync();
+        this.appConfig = appConfig;
+        this.writePackageSettings = writePackageSettings;
+        this.navigator = navigator;
     }
 
     private async Task InitializeAsync()
@@ -32,6 +45,7 @@ public partial class SearchPackageViewModel : ObservableObject
             sourceRepository = Repository.CreateSource(Repository.Provider.GetCoreV3(), this.SelectedPackageSource);
 
 
+        await SearchPackageAsync();
     }
 
 
@@ -105,7 +119,7 @@ public partial class SearchPackageViewModel : ObservableObject
     #region 执行命令
 
     [RelayCommand]
-    public async Task SearchPackageAsync(CancellationToken token)
+    public async Task SearchPackageAsync(/*CancellationToken token*/)
     {
         if (this.sourceRepository is null) return;
 
@@ -114,12 +128,13 @@ public partial class SearchPackageViewModel : ObservableObject
         //var findmetadataResource = await this.sourceRepository.GetResourceAsync<PackageMetadataResource>();
         //await findmetadataResource.GetMetadataAsync(this.PackageName, true, true, NullSourceCacheContext.Instance, NuGet.Common.NullLogger.Instance, token);
 
-        var searchResource = await this.sourceRepository.GetResourceAsync<PackageSearchResource>();
+        //var searchResource = await this.sourceRepository.GetResourceAsync<PackageSearchResource>();
 
-        var packages = await searchResource.SearchAsync(this.PackageName, new SearchFilter(true), 0, 10, NuGet.Common.NullLogger.Instance, token);
+        //var packages = await searchResource.SearchAsync(this.PackageName, new SearchFilter(true), 0, 10, NuGet.Common.NullLogger.Instance, token);
 
 
-        this.Packages = new ObservableCollection<IPackageSearchMetadata>(packages);
+
+        this.Packages = new IncrementalLoadingCollection<SearchPackageViewModel, IPackageSearchMetadata>(this, 20);
     }
 
     [RelayCommand]
@@ -148,34 +163,58 @@ public partial class SearchPackageViewModel : ObservableObject
             identity = new PackageIdentity(this.SelectedPackage.Identity.Id, this.SelectedVersion.Version);
         }
 
-        var nuget = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "nuget");
 
-        var packagePath = Path.Combine(nuget, identity.Id + "." + identity.Version.ToNormalizedString() + ".nupkg");
-        if (!File.Exists(packagePath))
+        var entity = new PackageEntity()
         {
+            Version = identity.Version.ToString(),
+            Name = identity.Id,
+            Framework = appConfig.Value.DefaultDllDir,
+            Dir = appConfig.Value?.DefaultDllDir
+        };
 
-            var dir = Path.GetDirectoryName(packagePath);
-            if (dir is not null && Directory.Exists(dir))
-                _ = Directory.CreateDirectory(dir);
+        var ls = new List<PackageEntity>(this.writePackageSettings.Value?.Packages ?? Enumerable.Empty<PackageEntity>());
 
+        if (!ls.Any(a => entity.Name.Equals(a.Name)))
+        {
+            ls.Add(entity);
 
-
-            var downloader = await sourceRepository!.GetResourceAsync<DownloadResource>();
-
-            var cache = Path.Combine(Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path, "cache");
-            using var sourceCacheContext = new SourceCacheContext() { NoCache = false };
-            var context = new PackageDownloadContext(sourceCacheContext, cache, true);
-
-            var result = await downloader.GetDownloadResourceResultAsync(identity, context, string.Empty, NuGet.Common.NullLogger.Instance, CancellationToken.None);
-
-            using (var fileStream = File.Open(packagePath, FileMode.OpenOrCreate, FileAccess.Write))
-                await result.PackageStream.CopyToAsync(fileStream);
-
-
-            //var metadata = await sourceRepository.GetResourceAsync<MetadataResource>();
-            //var vers = metadata.GetVersions(identity.Id, sourceCacheContext, NuGet.Common.NullLogger.Instance, CancellationToken.None);
-
+            await writePackageSettings.UpdateAsync(a => a with { Packages = ls.ToArray() });
         }
+
+
+
+        await this.navigator.NavigateBackAsync(this, qualifier: Qualifiers.None);
+
+        //var nuget = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "nuget");
+
+        //var packagePath = Path.Combine(nuget, identity.Id + "." + identity.Version.ToNormalizedString() + ".nupkg");
+        //if (!File.Exists(packagePath))
+        //{
+
+        //    var dir = Path.GetDirectoryName(packagePath);
+        //    if (dir is not null && Directory.Exists(dir))
+        //        _ = Directory.CreateDirectory(dir);
+
+
+
+        //    var downloader = await sourceRepository!.GetResourceAsync<DownloadResource>();
+
+        //    var cache = Path.Combine(Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path, "cache");
+        //    using var sourceCacheContext = new SourceCacheContext() { NoCache = false };
+        //    var context = new PackageDownloadContext(sourceCacheContext, cache, true);
+
+        //    var result = await downloader.GetDownloadResourceResultAsync(identity, context, string.Empty, NuGet.Common.NullLogger.Instance, CancellationToken.None);
+
+        //    using (var fileStream = File.Open(packagePath, FileMode.OpenOrCreate, FileAccess.Write))
+        //        await result.PackageStream.CopyToAsync(fileStream);
+
+
+        //    //var metadata = await sourceRepository.GetResourceAsync<MetadataResource>();
+        //    //var vers = metadata.GetVersions(identity.Id, sourceCacheContext, NuGet.Common.NullLogger.Instance, CancellationToken.None);
+
+        //}
+
+
 
         //using (var stream = new FileStream(packagePath, FileMode.Open, FileAccess.Read))
         //{
@@ -220,4 +259,12 @@ public partial class SearchPackageViewModel : ObservableObject
         this.SelectedVersion = null;
     }
 
+    public async Task<IEnumerable<IPackageSearchMetadata>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken = default)
+    {
+        var searchResource = await this.sourceRepository!.GetResourceAsync<PackageSearchResource>();
+
+        var packages = await searchResource.SearchAsync(this.PackageName, new SearchFilter(true), pageIndex * pageSize, pageSize, NuGet.Common.NullLogger.Instance, cancellationToken);
+
+        return packages ?? Enumerable.Empty<IPackageSearchMetadata>();
+    }
 }

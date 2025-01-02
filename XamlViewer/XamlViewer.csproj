@@ -71,6 +71,8 @@
         <!--<PackageReference Include="CommunityToolkit.WinUI.Controls.ListDetailsView" />-->
         <!--<PackageReference Include="CommunityToolkit.WinUI.Controls.DataTable" />-->
         <PackageReference Include="CommunityToolkit.WinUI.Triggers" />
+        <PackageReference Include="CommunityToolkit.WinUI.Collections" />
+        <PackageReference Include="CommunityToolkit.WinUI.Controls.HeaderedControls" />
 
 
         <PackageReference Include="NuGet.Configuration" />
@@ -85,11 +87,6 @@
         <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Update="Presentation\PackageInfoDialog.xaml.cs">
-        <DependentUpon>PackageInfoDialog.xaml</DependentUpon>
-      </Compile>
-    </ItemGroup>
 
 
 </Project>

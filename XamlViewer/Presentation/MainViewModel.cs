@@ -1,9 +1,15 @@
 using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Runtime.Loader;
 using Microsoft.Extensions.Configuration;
 using Microsoft.UI.Windowing;
+using Newtonsoft.Json.Linq;
+using NuGet.Protocol.Core.Types;
+using NuGet.Versioning;
 using Uno.Extensions;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
+using XamlViewer.Extensions;
 
 namespace XamlViewer.Presentation;
 
@@ -11,6 +17,8 @@ public partial class MainViewModel : ObservableObject
 {
     private INavigator _navigator;
     private readonly Window window;
+    private readonly ILogger<MainViewModel> logger;
+    private readonly IWritableOptions<AppSettings> writePackageSettings;
     private static int _index = 0;
     private readonly string? _defXaml;
 
@@ -24,6 +32,7 @@ public partial class MainViewModel : ObservableObject
         IDispatcher dispatcher,
         INavigator navigator,
         Window window,
+        ILogger<MainViewModel> logger,
         IConfiguration configuration,
         IWritableOptions<AppSettings> writePackageSettings)
     {
@@ -31,6 +40,8 @@ public partial class MainViewModel : ObservableObject
         this.Dispatcher = dispatcher;
         this._navigator = navigator;
         this.window = window;
+        this.logger = logger;
+        this.writePackageSettings = writePackageSettings;
         _defXaml = configuration.GetValue<string>("files.DefaultXaml", string.Empty);
 
         this.Works = new ObservableCollection<WorkViewModel>(
@@ -38,7 +49,27 @@ public partial class MainViewModel : ObservableObject
         );
 
         this.SelectedLast();
+
+        _ = InitializeAsync();
     }
+
+
+    private void LoadAllDependencys(List<PackageEntity> dependencys, List<PackageEntity> entitys)
+    {
+        foreach (var entity in entitys)
+        {
+            dependencys.Add(entity);
+
+            LoadAllDependencys(dependencys, entity.Children);
+        }
+
+    }
+
+    private async Task InitializeAsync()
+    {
+        await Plugins.Load(logger);
+    }
+
 
 
     #region 绑定属性
@@ -56,6 +87,7 @@ public partial class MainViewModel : ObservableObject
         set => SetProperty(ref field, value);
     }
 
+
     #endregion
 
     #region 执行命令
@@ -63,6 +95,11 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     public async Task SettingAsync()
     {
+        //修复TabView因选中时跳转页面，返回后出现bug的问题，因默认已经选中了某个项，但是数据还未加载中，造成选中项没有
+#if !HAS_UNO_WINUI
+        this.SelectedWork = null;
+#endif
+
         await this._navigator!.NavigateViewModelAsync<SettingViewModel>(this, qualifier: Qualifiers.None);
     }
 

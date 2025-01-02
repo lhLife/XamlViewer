@@ -1,5 +1,7 @@
+using System.Data.Common;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Configuration;
 using Uno.Extensions.Configuration;
 using Uno.Extensions.Localization;
@@ -24,6 +26,8 @@ public partial class App : Application
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
+        //var d = Environment.OSVersion.ToString();
+
         var builder = this.CreateBuilder(args)
             // Add navigation support for toolkit controls such as TabBar and NavigationView
             .UseToolkitNavigation()

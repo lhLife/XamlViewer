@@ -193,6 +193,7 @@ public class CompositeStateTrigger : StateTriggerBase, ITriggerValue
     {
 
         StateTriggers = new StateTriggerCollection();
+
     }
 
     private void EvaluateTriggers()
@@ -265,13 +266,7 @@ public class CompositeStateTrigger : StateTriggerBase, ITriggerValue
         {
             foreach (var item in newItems)
             {
-                if (item is StateTrigger)
-                {
-                    long id = item.RegisterPropertyChangedCallback(
-                            StateTrigger.IsActiveProperty, TriggerIsActivePropertyChanged);
-                    item.SetValue(RegistrationTokenProperty, id);
-                }
-                else if (item is ITriggerValue)
+                if (item is ITriggerValue)
                 {
                     ((ITriggerValue)item).IsActiveChanged += CompositeTrigger_IsActiveChanged;
                 }
@@ -285,19 +280,7 @@ public class CompositeStateTrigger : StateTriggerBase, ITriggerValue
         {
             foreach (var item in oldItems)
             {
-                if (item is StateTrigger)
-                {
-                    var value = item.GetValue(RegistrationTokenProperty);
-                    if (value is long)
-                    {
-                        if (((long)value) > 0)
-                        {
-                            item.ClearValue(RegistrationTokenProperty);
-                            item.UnregisterPropertyChangedCallback(StateTrigger.IsActiveProperty, (long)value);
-                        }
-                    }
-                }
-                else if (item is ITriggerValue)
+                if (item is ITriggerValue)
                 {
                     ((ITriggerValue)item).IsActiveChanged -= CompositeTrigger_IsActiveChanged;
                 }
@@ -311,10 +294,6 @@ public class CompositeStateTrigger : StateTriggerBase, ITriggerValue
         EvaluateTriggers();
     }
 
-    private void TriggerIsActivePropertyChanged(DependencyObject sender, DependencyProperty dp)
-    {
-        EvaluateTriggers();
-    }
 
     /// <summary>
     /// Gets or sets the state trigger collection.
@@ -330,6 +309,17 @@ public class CompositeStateTrigger : StateTriggerBase, ITriggerValue
     /// </summary>
     public static readonly DependencyProperty StateTriggersProperty =
         DependencyProperty.Register("StateTriggers", typeof(StateTriggerCollection), typeof(CompositeStateTrigger), new PropertyMetadata(null, OnStateTriggersPropertyChanged));
+
+
+
+    public object DataContext
+    {
+        get { return (object)GetValue(DataContextProperty); }
+        set { SetValue(DataContextProperty, value); }
+    }
+    public static readonly DependencyProperty DataContextProperty =
+        DependencyProperty.Register("DataContext", typeof(object), typeof(CompositeStateTrigger), new PropertyMetadata(null, OnStateTriggersPropertyChanged));
+
 
     private static void OnStateTriggersPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -366,12 +356,6 @@ public class CompositeStateTrigger : StateTriggerBase, ITriggerValue
         }
         trigger.EvaluateTriggers();
     }
-
-    /// <summary>
-    /// Used for remembering what token was used for event listening
-    /// </summary>
-    private static readonly DependencyProperty RegistrationTokenProperty =
-        DependencyProperty.RegisterAttached("RegistrationToken", typeof(long), typeof(CompositeStateTrigger), new PropertyMetadata(0));
 
     /// <summary>
     /// Gets or sets the logical operation to apply to the triggers.

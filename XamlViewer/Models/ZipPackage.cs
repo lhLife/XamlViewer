@@ -1,12 +1,14 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.IO.Compression;
+using NuGet.Common;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Versioning;
 
 namespace XamlViewer.Models;
 
-public class ZipPackage : IPackageMetadata
+public class ZipPackage : IPackageMetadata, NuGet.Packaging.IPackageContentReader
 {
     private readonly string source;
     private readonly Func<Stream> _streamFactory;
@@ -39,6 +41,95 @@ public class ZipPackage : IPackageMetadata
 
         var manifest = Manifest.ReadFrom(nuspecStream, false);
         _metadata = manifest.Metadata;
+    }
+
+    public IEnumerable<FrameworkSpecificGroup> GetFrameworkItems()
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.GetFrameworkItems().ToList();
+    }
+
+    public IEnumerable<FrameworkSpecificGroup> GetBuildItems()
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.GetBuildItems().ToList();
+    }
+
+    public IEnumerable<FrameworkSpecificGroup> GetToolItems()
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.GetToolItems().ToList();
+    }
+
+    public IEnumerable<FrameworkSpecificGroup> GetContentItems()
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.GetContentItems().ToList();
+    }
+
+    public IEnumerable<FrameworkSpecificGroup> GetLibItems()
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.GetLibItems().ToList();
+    }
+
+    public IEnumerable<FrameworkSpecificGroup> GetReferenceItems()
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.GetReferenceItems().ToList();
+    }
+
+    public IEnumerable<PackageDependencyGroup> GetPackageDependencies()
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.GetPackageDependencies().ToList();
+    }
+
+
+    public IEnumerable<string> GetFiles()
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.GetFiles().ToList();
+    }
+
+    public IEnumerable<string> GetFiles(string folder)
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.GetFiles(folder.EndsWith('/') ? folder.Substring(0, folder.Length - 1) : folder).ToList();
+    }
+
+
+    public Task<IEnumerable<string>> CopyFilesAsync(string destination, IEnumerable<string> packageFiles, NuGet.Common.ILogger logger, CancellationToken token)
+    {
+        return Task.FromResult(CopyFiles(destination, packageFiles, logger, token));
+    }
+    public IEnumerable<string> CopyFiles(string destination, IEnumerable<string> packageFiles, NuGet.Common.ILogger logger, CancellationToken token)
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+
+        return reader.CopyFiles(destination, packageFiles, (a, b, c) => this.ExtractFile(a, Path.Combine(destination, this.GetFileName(a)), logger), logger, token).ToList();
+    }
+
+    private string GetFileName(string path)
+    {
+        return path.Split('/').LastOrDefault()!;
+    }
+
+    public string ExtractFile(string packageFile, string targetFilePath, NuGet.Common.ILogger logger)
+    {
+        using var stream = _streamFactory();
+        using var reader = new PackageArchiveReader(stream);
+        return reader.ExtractFile(packageFile, targetFilePath, logger);
     }
 
     public string Id => _metadata.Id;

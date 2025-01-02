@@ -45,7 +45,8 @@
             <!--<AppBarButton Command="{Binding CloseCommand}" CommandParameter="{utu:AncestorBinding AncestorType=NavigationView, Path=SelectedItem}" Icon="Clear" Label="关闭当前项" />-->
             <AppBarButton Command="{Binding SettingCommand}" Icon="Setting" Label="设置" />
             <AppBarSeparator />
-            <AppBarToggleButton Icon="Pin" Label="置顶" Command="{Binding PinCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsChecked}" />
+            <AppBarToggleButton Icon="{ui:FontIcon FontFamily={StaticResource SymbolThemeFontFamily},Glyph='&#xE768;'}" Label="置顶" Command="{Binding PinCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsChecked}" />
+            
         </CommandBar>
 
 
