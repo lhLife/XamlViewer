@@ -185,54 +185,6 @@ public partial class SearchPackageViewModel : ObservableObject, CommunityToolkit
 
         await this.navigator.NavigateBackAsync(this, qualifier: Qualifiers.None);
 
-        //var nuget = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "nuget");
-
-        //var packagePath = Path.Combine(nuget, identity.Id + "." + identity.Version.ToNormalizedString() + ".nupkg");
-        //if (!File.Exists(packagePath))
-        //{
-
-        //    var dir = Path.GetDirectoryName(packagePath);
-        //    if (dir is not null && Directory.Exists(dir))
-        //        _ = Directory.CreateDirectory(dir);
-
-
-
-        //    var downloader = await sourceRepository!.GetResourceAsync<DownloadResource>();
-
-        //    var cache = Path.Combine(Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path, "cache");
-        //    using var sourceCacheContext = new SourceCacheContext() { NoCache = false };
-        //    var context = new PackageDownloadContext(sourceCacheContext, cache, true);
-
-        //    var result = await downloader.GetDownloadResourceResultAsync(identity, context, string.Empty, NuGet.Common.NullLogger.Instance, CancellationToken.None);
-
-        //    using (var fileStream = File.Open(packagePath, FileMode.OpenOrCreate, FileAccess.Write))
-        //        await result.PackageStream.CopyToAsync(fileStream);
-
-
-        //    //var metadata = await sourceRepository.GetResourceAsync<MetadataResource>();
-        //    //var vers = metadata.GetVersions(identity.Id, sourceCacheContext, NuGet.Common.NullLogger.Instance, CancellationToken.None);
-
-        //}
-
-
-
-        //using (var stream = new FileStream(packagePath, FileMode.Open, FileAccess.Read))
-        //{
-        //    using (PackageArchiveReader reader = new PackageArchiveReader(stream))
-        //    {
-        //        var nuspec = reader.NuspecReader;
-        //        var d = nuspec.GetContentFiles().ToList();
-
-        //        var items = reader.GetContentItems();
-        //    }
-
-
-        //    //using (var zip = new ZipArchive(stream))
-        //    //{
-        //    //    var content = zip.Entries.ToList();
-        //    //}
-        //}
-
 
     }
 

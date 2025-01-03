@@ -15,6 +15,7 @@ namespace XamlViewer.Presentation;
 
 public partial class MainViewModel : ObservableObject
 {
+    private readonly IAppHostEnvironment environment;
     private INavigator _navigator;
     private readonly Window window;
     private readonly ILogger<MainViewModel> logger;
@@ -27,6 +28,7 @@ public partial class MainViewModel : ObservableObject
 
 
     public MainViewModel(
+        IAppHostEnvironment environment,
         IStringLocalizer localizer,
         IOptions<AppConfig> appConfig,
         IDispatcher dispatcher,
@@ -36,6 +38,7 @@ public partial class MainViewModel : ObservableObject
         IConfiguration configuration,
         IWritableOptions<AppSettings> writePackageSettings)
     {
+        this.environment = environment;
         this.AppConfig = appConfig;
         this.Dispatcher = dispatcher;
         this._navigator = navigator;
@@ -67,7 +70,7 @@ public partial class MainViewModel : ObservableObject
 
     private async Task InitializeAsync()
     {
-        await Plugins.Load(logger);
+        await Plugins.Load(environment.AppDataPath, logger);
     }
 
 

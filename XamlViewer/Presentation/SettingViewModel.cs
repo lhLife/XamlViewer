@@ -15,11 +15,11 @@ using Uno.Extensions.Specialized;
 using Uno.UI.RemoteControl.Messaging.IdeChannel;
 using XamlViewer.Extensions;
 using XamlViewer.Models;
-using static SkiaSharp.HarfBuzz.SKShaper;
 
 namespace XamlViewer.Presentation;
 public partial class SettingViewModel : ObservableObject
 {
+    private readonly IAppHostEnvironment environment;
     private readonly IOptions<AppConfig> appConfig;
     private readonly INavigator navigator;
     private readonly ILogger<SettingViewModel> logger;
@@ -31,12 +31,14 @@ public partial class SettingViewModel : ObservableObject
 
 
     public SettingViewModel(
+        IAppHostEnvironment environment,
         IOptions<AppConfig> appConfig,
         INavigator navigator,
         IDispatcher dispatcher,
         ILogger<SettingViewModel> logger,
         IWritableOptions<AppSettings> writePackageSettings)
     {
+        this.environment = environment;
         this.appConfig = appConfig;
         this.navigator = navigator;
         this.logger = logger;
@@ -154,7 +156,7 @@ public partial class SettingViewModel : ObservableObject
         var dependencyInfoResource = await sourceRepository!.GetResourceAsync<DependencyInfoResource>();
         var idresource = await sourceRepository.GetResourceAsync<FindPackageByIdResource>();
 
-        var cache = Path.Combine(Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path, "cache");
+        var cache = Path.Combine(environment.AppDataPath, "cache");
         using var sourceCacheContext = new SourceCacheContext() { NoCache = false };
 
         //加载当前所有包信息，不包含选中的这个。
@@ -190,15 +192,17 @@ public partial class SettingViewModel : ObservableObject
         this.LoadAllDependencys(dependencys, sources);
 
 
-        dependencys = dependencys.WhereToList(a => !a.IsDownload);
+        //dependencys = dependencys.WhereToList(a => !a.IsDownload);
 
-        var nuget = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "nuget");
-        var plugins = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "plugins");
-        //清理dll
-        Directory.Delete(plugins, true);
+
+        var nuget = Path.Combine(environment.AppDataPath, "nuget");
+        var plugins = Path.Combine(environment.AppDataPath, "plugins");
+
+
 
         if (!Directory.Exists(nuget)) Directory.CreateDirectory(nuget);
         if (!Directory.Exists(plugins)) Directory.CreateDirectory(plugins);
+
 
 
         var source = NuGet.Configuration.PackageSourceProvider.LoadPackageSources(NuGet.Configuration.Settings.LoadDefaultSettings(null)).FirstOrDefault();
@@ -206,13 +210,13 @@ public partial class SettingViewModel : ObservableObject
         var resource = Repository.CreateSource(Repository.Provider.GetCoreV3(), source);
 
 
-        var cache = Path.Combine(Windows.Storage.ApplicationData.Current.LocalCacheFolder.Path, "cache");
+        var cache = Path.Combine(environment.AppDataPath, "cache");
         using var sourceCacheContext = new SourceCacheContext() { NoCache = false };
         var context = new PackageDownloadContext(sourceCacheContext, cache, true);
         var downloader = await resource.GetResourceAsync<NuGet.Protocol.Core.Types.DownloadResource>();
 
 
-        dependencys.AsParallel().ForEach(async (a, item) =>
+        foreach (var item in dependencys)
         {
 
             var identity = new NuGet.Packaging.Core.PackageIdentity(item.Name, NuGetVersion.Parse(item.Version));
@@ -260,8 +264,8 @@ public partial class SettingViewModel : ObservableObject
 
             var s = await zip.CopyFilesAsync(plugins, paths, NuGet.Common.NullLogger.Instance, CancellationToken.None);
 
+        }
 
-        });
 
         dependencys.ForEach(a => a.IsDownload = true);
 
@@ -270,7 +274,14 @@ public partial class SettingViewModel : ObservableObject
 
         await writePackageSettings.UpdateAsync(a => a with { Packages = this.Packages.ToArray() });
 
-        await Plugins.Load(logger);
+        try
+        {
+
+            await Plugins.Load(environment.AppDataPath, logger);
+        }
+        catch (Exception ex)
+        {
+        }
     }
 
 

@@ -54,7 +54,7 @@ public partial class App : Application
                         .EmbeddedSource<App>()
                         .Section<AppConfig>()
                         .Section<AppSettings>()
-                , configureHostConfiguration: (builder) => builder.AddEmbeddedConfigurationFile<App>("appsettings.desktop.json"))
+                , configureHostConfiguration: (builder) => builder.AddEmbeddedConfigurationFile<App>("appsettings.local.json"))
                 .ConfigureAppConfiguration((ctx, b) =>
                 {
                     Assembly executingAssembly = typeof(App).Assembly;
@@ -117,6 +117,9 @@ public partial class App : Application
         //Thread.CurrentThread.CurrentCulture
         //LocalizationConfiguration/Cultures/First()
 
+//#if HAS_UNO_WINUI
+//        FeatureConfiguration.TextBox.UseOverlayOnSkia = false;
+//#endif
 
     }
 

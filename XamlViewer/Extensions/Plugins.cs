@@ -11,9 +11,9 @@ namespace XamlViewer.Extensions;
 
 public class Plugins
 {
-    public static async Task Load(ILogger logger)
+    public static async Task Load(string basePath, ILogger logger)
     {
-        var plugins = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "plugins");
+        var plugins = Path.Combine(basePath, "plugins");
 
         if (!Directory.Exists(plugins))
         {
