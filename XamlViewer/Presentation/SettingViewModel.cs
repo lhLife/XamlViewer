@@ -277,7 +277,7 @@ public partial class SettingViewModel : ObservableObject
         try
         {
 
-            await Plugins.Load(environment.AppDataPath, logger);
+            await Plugins.LoadAsync(environment.AppDataPath, logger);
         }
         catch (Exception ex)
         {

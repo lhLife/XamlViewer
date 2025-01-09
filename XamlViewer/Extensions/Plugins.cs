@@ -11,7 +11,7 @@ namespace XamlViewer.Extensions;
 
 public class Plugins
 {
-    public static async Task Load(string basePath, ILogger logger)
+    public static async Task LoadAsync(string basePath, ILogger logger)
     {
         var plugins = Path.Combine(basePath, "plugins");
 
@@ -23,47 +23,54 @@ public class Plugins
 
         //Assembly.GetEntryAssembly().GetReferencedAssemblies();
 
-        if (files.Any())
+        try
         {
-            var types = new List<Type>();
-            //files.ForEach(path => Assembly.LoadFile(path));
 
-            files.ForEach(path =>
+            if (files.Any())
             {
-                var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+                var types = new List<Type>();
+                //files.ForEach(path => Assembly.LoadFile(path));
 
-
-                var t = assembly.GetTypes()
-                 .Where(a => a.Name.EndsWith("GlobalStaticResources", StringComparison.Ordinal))
-                 .ToList();
-
-                types.AddRange(t);
-
-            });
-
-
-            //加载资源
-            types.ForEach(a =>
-            {
-                try
+                files.ForEach(path =>
                 {
-                    var d = Activator.CreateInstance(a);
-                    var method1 = a.GetMethod("Initialize", BindingFlags.Public | BindingFlags.Static);
-                    var method2 = a.GetMethod("RegisterDefaultStyles", BindingFlags.Public | BindingFlags.Static);
-                    var method3 = a.GetMethod("RegisterResourceDictionariesBySource", BindingFlags.Public | BindingFlags.Static);
-                    method1?.Invoke(d, null);
-                    method2?.Invoke(d, null);
-                    method3?.Invoke(d, null);
-                }
-                catch (Exception ex)
+                    var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+
+
+                    var t = assembly.GetTypes()
+                     .Where(a => a.Name.EndsWith("GlobalStaticResources", StringComparison.Ordinal))
+                     .ToList();
+
+                    types.AddRange(t);
+
+                });
+
+
+                //加载资源
+                types.ForEach(a =>
                 {
-                    logger.LogError(ex, "加载dll错误");
-                }
-            });
+                    try
+                    {
+                        var d = Activator.CreateInstance(a);
+                        var method1 = a.GetMethod("Initialize", BindingFlags.Public | BindingFlags.Static);
+                        var method2 = a.GetMethod("RegisterDefaultStyles", BindingFlags.Public | BindingFlags.Static);
+                        var method3 = a.GetMethod("RegisterResourceDictionariesBySource", BindingFlags.Public | BindingFlags.Static);
+                        method1?.Invoke(d, null);
+                        method2?.Invoke(d, null);
+                        method3?.Invoke(d, null);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex, "加载dll错误");
+                    }
+                });
 
 
 
 
+            }
+        }
+        catch (Exception ex)
+        {
         }
     }
 }

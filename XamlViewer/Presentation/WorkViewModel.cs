@@ -332,7 +332,8 @@ public partial class WorkViewModel : ObservableObject, IDisposable
                     Text = ex.Message,
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center,
-                    TextWrapping = TextWrapping.WrapWholeWords
+                    TextWrapping = TextWrapping.WrapWholeWords,
+                    IsTextSelectionEnabled = true,
                 }));
 
             }

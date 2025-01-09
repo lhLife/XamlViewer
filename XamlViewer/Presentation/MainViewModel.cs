@@ -4,18 +4,21 @@ using System.Runtime.Loader;
 using Microsoft.Extensions.Configuration;
 using Microsoft.UI.Windowing;
 using Newtonsoft.Json.Linq;
+using NuGet.Configuration;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 using Uno.Extensions;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using XamlViewer.Extensions;
+using XamlViewer.Models;
 
 namespace XamlViewer.Presentation;
 
 public partial class MainViewModel : ObservableObject
 {
     private readonly IAppHostEnvironment environment;
+    private readonly IThemeService themeService;
     private INavigator _navigator;
     private readonly Window window;
     private readonly ILogger<MainViewModel> logger;
@@ -29,6 +32,7 @@ public partial class MainViewModel : ObservableObject
 
     public MainViewModel(
         IAppHostEnvironment environment,
+        IThemeService themeService,
         IStringLocalizer localizer,
         IOptions<AppConfig> appConfig,
         IDispatcher dispatcher,
@@ -39,6 +43,7 @@ public partial class MainViewModel : ObservableObject
         IWritableOptions<AppSettings> writePackageSettings)
     {
         this.environment = environment;
+        this.themeService = themeService;
         this.AppConfig = appConfig;
         this.Dispatcher = dispatcher;
         this._navigator = navigator;
@@ -70,7 +75,15 @@ public partial class MainViewModel : ObservableObject
 
     private async Task InitializeAsync()
     {
-        await Plugins.Load(environment.AppDataPath, logger);
+        await Plugins.LoadAsync(environment.AppDataPath, logger);
+        var title = AppConfig.Value.Title ?? Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
+        if (title is not null)
+        {
+            this.Dispatcher.TryEnqueue(() =>
+            {
+                window.Title = title;
+            });
+        }
     }
 
 
