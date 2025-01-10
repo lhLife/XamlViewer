@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Configuration;
+using Uno;
 using Uno.Extensions.Configuration;
 using Uno.Extensions.Localization;
 using Uno.Resizetizer;
@@ -26,7 +27,6 @@ public partial class App : Application
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
-        //var d = Environment.OSVersion.ToString();
 
         var builder = this.CreateBuilder(args)
             // Add navigation support for toolkit controls such as TabBar and NavigationView
@@ -105,7 +105,7 @@ public partial class App : Application
 
         Host = await builder.NavigateAsync<Shell>();
 
-
+        //Windows.Devices.Sensors.Pedometer
 
         //多语言的初始化实现代码
         //Uno.Extensions.Localization.LocalizationService
@@ -117,9 +117,9 @@ public partial class App : Application
         //Thread.CurrentThread.CurrentCulture
         //LocalizationConfiguration/Cultures/First()
 
-//#if HAS_UNO_WINUI
-//        FeatureConfiguration.TextBox.UseOverlayOnSkia = false;
-//#endif
+        //#if HAS_UNO_WINUI
+        //        FeatureConfiguration.TextBox.UseOverlayOnSkia = false;
+        //#endif
 
     }
 

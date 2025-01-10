@@ -165,15 +165,36 @@ public partial class MainViewModel : ObservableObject
 
         if (file == null) return;
 
-        //文件已存在时退出
-        if (this.Works.Any(a => a.Path == file.Path)) return;
-
-        this.Works.AddRange(WrapViewModel(new WorkEntity()
+        if (file.Provider.Id.Equals("jsfileaccessapi", StringComparison.InvariantCultureIgnoreCase))
         {
-            Title = file.Name,
-            Mode = WorkMode.File,
-            Path = file.Path,
-        }));
+            var text = await FileIO.ReadTextAsync(file);
+
+            this.Works.AddRange(WrapViewModel(new WorkEntity()
+            {
+                Title = file.Name,
+                Mode = WorkMode.None,
+                Text = text,
+            }));
+        }
+
+        if (file.Provider.Id == "computer")
+        {
+            //文件已存在时退出
+            if (this.Works.Any(a => a.Path == file.Path))
+            {
+                this.SelectedWork = this.Works.FirstOrDefault(a => a.Path == file.Path);
+                return;
+            }
+
+            // File is a temporary file created using Upload picker.
+            this.Works.AddRange(WrapViewModel(new WorkEntity()
+            {
+                Title = file.Name,
+                Mode = WorkMode.File,
+                Path = file.Path,
+            }));
+        }
+
 
         this.SelectedLast();
 
