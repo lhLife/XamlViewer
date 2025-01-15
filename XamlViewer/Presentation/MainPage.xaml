@@ -80,6 +80,7 @@
               <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                   <ItemsStackPanel Orientation="Vertical" />
+
                 </ItemsPanelTemplate>
               </ListView.ItemsPanel>
               <ListView.ItemTemplate>
@@ -87,12 +88,12 @@
                   <Grid ColumnDefinitions="*,Auto">
                     <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="5">
                       <IconSourceElement IconSource="{x:Bind Icon}" />
-                      <TextBlock Text="{x:Bind Title}" />
+                      <TextBlock VerticalAlignment="Center" Text="{x:Bind Title}" />
                     </StackPanel>
                     <Button Grid.Column="1"
                             Command="{utu:ItemsControlBinding Path=DataContext.CloseCommand}"
                             CommandParameter="{x:Bind}"
-                            Style="{StaticResource DeleteButtonStyle}" />
+                            Style="{StaticResource AlternateCloseButtonStyle}" />
                   </Grid>
                 </DataTemplate>
               </ListView.ItemTemplate>
@@ -102,7 +103,6 @@
             <controls:SwitchPresenter TargetType="x:Boolean" Value="{Binding SelectedWork, Mode=OneWay, Converter={StaticResource EmptyStringToObjectConverter}}">
               <controls:Case Value="True">
                 <local:WorkPage DataContext="{Binding SelectedWork, Mode=OneWay}" />
-
               </controls:Case>
               <controls:Case Value="False">
                 <TextBlock Text="没有选中的视图" />
@@ -174,6 +174,5 @@
         </VisualState>
       </VisualStateGroup>
     </VisualStateManager.VisualStateGroups>
-
   </Grid>
 </Page>
