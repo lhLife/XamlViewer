@@ -8,6 +8,7 @@ using NuGet.Configuration;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 using Uno.Extensions;
+using Uno.Extensions.Specialized;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using XamlViewer.Extensions;
@@ -75,7 +76,6 @@ public partial class MainViewModel : ObservableObject
 
     private async Task InitializeAsync()
     {
-        await Plugins.LoadAsync(environment.AppDataPath, logger);
         var title = AppConfig.Value.Title ?? Assembly.GetEntryAssembly()?.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
         if (title is not null)
         {
@@ -84,6 +84,10 @@ public partial class MainViewModel : ObservableObject
                 window.Title = title;
             });
         }
+
+        this.ListDetailMode = !(OperatingSystem.IsWindows() || OperatingSystem.IsLinux() || OperatingSystem.IsBrowser());
+
+        await Plugins.LoadAsync(environment.AppDataPath, logger);
     }
 
 
@@ -103,6 +107,12 @@ public partial class MainViewModel : ObservableObject
         set => SetProperty(ref field, value);
     }
 
+    //列表详情模式，且根据他显示导航返回按钮
+    public bool ListDetailMode
+    {
+        get => field;
+        set => SetProperty(ref field, value);
+    }
 
     #endregion
 
@@ -119,19 +129,17 @@ public partial class MainViewModel : ObservableObject
         await this._navigator!.NavigateViewModelAsync<SettingViewModel>(this, qualifier: Qualifiers.None);
     }
 
-    [RelayCommand(CanExecute = nameof(CanCloseAsync))]
-    public async Task CloseAsync(TabViewTabCloseRequestedEventArgs? workEntity)
+    [RelayCommand]
+    public async Task CloseAsync(WorkViewModel item)
     {
-        var item = workEntity!.Item as WorkViewModel;
+        if (item == null) return;
         this.Works.Remove(item!);
+
+        if (this.SelectedWork == item) this.SelectedLast();
 
         item!.Dispose();
     }
 
-    private bool CanCloseAsync(TabViewTabCloseRequestedEventArgs? workEntity)
-    {
-        return workEntity?.Item != null;
-    }
 
 
     [RelayCommand]
@@ -224,6 +232,21 @@ public partial class MainViewModel : ObservableObject
 
     }
 
+
+    [RelayCommand]
+    public async Task ClearWorkAsync()
+    {
+        this.SelectedWork = null;
+    }
+
+    [RelayCommand]
+    public async Task SwitchSplitAsync()
+    {
+        if (this.SelectedWork is WorkViewModel t)
+        {
+            t.IsSplit = !t.IsSplit;
+        }
+    }
     #endregion
 
 

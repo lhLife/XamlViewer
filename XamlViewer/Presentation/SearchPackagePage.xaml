@@ -17,12 +17,12 @@
       <RowDefinition Height="Auto" />
       <RowDefinition />
     </Grid.RowDefinitions>
-    <utu:NavigationBar x:Name="nav" Content="查找包" MainCommandMode="Back">
+    <utu:NavigationBar x:Name="searchPackageNav" Content="查找包" MainCommandMode="Back">
       <utu:NavigationBar.MainCommand>
-        <AppBarButton x:Name="navbtn" Icon="Back" />
+        <AppBarButton x:Name="searchPackageNavbtn" Icon="Back" />
       </utu:NavigationBar.MainCommand>
     </utu:NavigationBar>
-    <Grid x:Name="ttt" Grid.Row="1">
+    <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto" />
         <ColumnDefinition Width="Auto" />
@@ -47,161 +47,12 @@
                   SelectedItem="{Binding SelectedPackageSource}" />
       </StackPanel>
     </Grid>
-
-    <!--<controls:ListDetailsView Grid.Row="2" x:Name="listDetails" Margin="0,10" BackButtonBehavior="Inline"
-                              ItemsSource="{Binding Packages}"
-                              ListPaneWidth="500"
-                              SelectedItem="{Binding SelectedPackage, Mode=TwoWay}">
-      <controls:ListDetailsView.DetailsHeader>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" Text="包信息" />
-      </controls:ListDetailsView.DetailsHeader>
-      <controls:ListDetailsView.ItemTemplate>
-        <DataTemplate x:DataType="nuget:IPackageSearchMetadata">
-          <Grid Padding="0,5" ColumnSpacing="5" RowSpacing="5">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="Auto" />
-              <ColumnDefinition />
-              <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="18" />
-            </Grid.RowDefinitions>
-            <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Width="50" Height="50"
-                   HorizontalAlignment="Center" Stretch="UniformToFill">
-              <Image.Source>
-                <BitmapImage UriSource="{x:Bind IconUrl}" />
-              </Image.Source>
-            </Image>
-
-            <TextBlock Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Center" FontWeight="Bold"
-                       Text="{x:Bind Identity.Version}" />
-            <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" TextWrapping="NoWrap">
-              <Run FontWeight="Bold" Text="{x:Bind Title}" />
-              <Run Text="by" />
-              <Run Text="{x:Bind Authors}" />
-              <Run Text="," />
-              <Run Text="{x:Bind DownloadCount}" />
-            </TextBlock>
-            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
-                       Text="{x:Bind Description}"
-                       TextWrapping="Wrap" />
-          </Grid>
-
-        </DataTemplate>
-      </controls:ListDetailsView.ItemTemplate>
-      <controls:ListDetailsView.DetailsTemplate>
-        <DataTemplate x:DataType="nuget:IPackageSearchMetadata">
-          <ScrollViewer>
-
-            <StackPanel Margin="5,0" Orientation="Vertical">
-
-              <StackPanel Orientation="Horizontal" Spacing="5">
-                <Image Width="50" Height="50" HorizontalAlignment="Center" Stretch="UniformToFill">
-                  <Image.Source>
-                    <BitmapImage UriSource="{x:Bind IconUrl}" />
-                  </Image.Source>
-                </Image>
-                <TextBlock FontSize="22" FontWeight="Bold"
-                           Text="{x:Bind Title}" />
-              </StackPanel>
-
-              <StackPanel Orientation="Horizontal" Spacing="5">
-                <HyperlinkButton Content="打开" Command="{utu:AncestorBinding AncestorType=controls:ListDetailsView,Path=DataContext.OpenCommand}" />
-                <HyperlinkButton Command="{utu:AncestorBinding AncestorType=controls:ListDetailsView,
-                                                               Path=DataContext.GetPackageVersionsCommand}"
-                                 Content="显示所有版本"
-                                 Visibility="{Binding ElementName=listDetails,Path=DataContext.IsShow, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=True,Mode=OneWay}" />
-                <HyperlinkButton Command="{utu:AncestorBinding AncestorType=controls:ListDetailsView,
-                                                               Path=DataContext.HideCommand}"
-                                 Content="隐藏所有版本"
-                                 Visibility="{Binding ElementName=listDetails,Path=DataContext.IsShow, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=False,Mode=OneWay}" />
-              </StackPanel>
-              <ListView Height="200"
-                        ItemsSource="{utu:ItemsControlBinding AncestorType=controls:ListDetailsView,
-                                                              Path=DataContext.Versions}"
-                        SelectedItem="{Binding ElementName=listDetails,Path=DataContext.SelectedVersion}"
-                        ScrollViewer.VerticalScrollBarVisibility="Visible"
-                        Visibility="{Binding ElementName=listDetails,Path=DataContext.IsShow, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=False,Mode=OneWay}">
-                <ListView.ItemTemplate>
-                  <x:DataTemplate x:DataType="nuget:VersionInfo">
-                    <controls:DataRow>
-                      <TextBlock VerticalAlignment="Center" Text="{x:Bind Version}" />
-                      <TextBlock VerticalAlignment="Center" Text="{x:Bind DownloadCount}" />
-                    </controls:DataRow>
-
-                  </x:DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.Header>
-                  <controls:DataTable Margin="12,0,0,0">
-                    <controls:DataColumn CanResize="True" Content="版本" DesiredWidth="120" />
-                    <controls:DataColumn Content="下载数量" DesiredWidth="*" />
-                  </controls:DataTable>
-                </ListView.Header>
-
-              </ListView>
-              <TextBlock FontSize="13" FontWeight="Bold" Text="备注" />
-              <TextBlock Text="{x:Bind Description}" TextWrapping="WrapWholeWords" />
-              <Grid Margin="0,5" ColumnSpacing="10" RowSpacing="10">
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="100" />
-                  <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" FontSize="13" FontWeight="Bold" Text="版本" />
-                <TextBlock Grid.Column="1" Text="{x:Bind Identity.Version}" />
-                <TextBlock Grid.Row="1" Grid.Column="0" FontSize="13" FontWeight="Bold" Text="作者" />
-                <TextBlock Grid.Row="1" Grid.Column="1"
-                           Text="{x:Bind Authors}" />
-                <TextBlock Grid.Row="2" Grid.Column="0" FontSize="13" FontWeight="Bold" Text="授权" />
-                <TextBlock Grid.Row="2" Grid.Column="1" TextWrapping="Wrap">
-                  <Hyperlink NavigateUri="{x:Bind LicenseUrl}">
-                    <Run Text="{x:Bind LicenseUrl}" />
-                  </Hyperlink>
-                </TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="0" FontSize="13" FontWeight="Bold" Text="自诉" />
-                <TextBlock Grid.Row="3" Grid.Column="1" TextWrapping="Wrap">
-                  <Hyperlink NavigateUri="{x:Bind ReadmeUrl}">
-                    <Run Text="{x:Bind ReadmeUrl}" />
-                  </Hyperlink>
-                </TextBlock>
-
-                <TextBlock Grid.Row="4" Grid.Column="0" FontSize="13" FontWeight="Bold" Text="项目地址" />
-                <TextBlock Grid.Row="4" Grid.Column="1" TextWrapping="Wrap">
-                  <Hyperlink NavigateUri="{x:Bind ProjectUrl}">
-                    <Run Text="{x:Bind ProjectUrl}" />
-                  </Hyperlink>
-                </TextBlock>
-                <TextBlock Grid.Row="5" Grid.Column="0" FontSize="13" FontWeight="Bold" Text="报告滥用地址" />
-                <TextBlock Grid.Row="5" Grid.Column="1" TextWrapping="Wrap">
-                  <Hyperlink NavigateUri="{x:Bind ReportAbuseUrl}">
-                    <Run Text="{x:Bind ReportAbuseUrl}" />
-                  </Hyperlink>
-                </TextBlock>
-              </Grid>
-
-              <TextBlock FontSize="13" FontWeight="Bold" Text="标签" />
-              <TextBlock Text="{x:Bind Tags}" TextWrapping="WrapWholeWords" />
-            </StackPanel>
-          </ScrollViewer>
-        </DataTemplate>
-
-      </controls:ListDetailsView.DetailsTemplate>
-    </controls:ListDetailsView>-->
-
-    <TwoPaneView x:Name="MyTwoPaneView" Grid.Row="2"
+    <TwoPaneView x:Name="searchPackageTwoPaneView" Grid.Row="2"
                  Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                  MinTallModeHeight="{StaticResource DoublePositiveInfinity}"
                  Pane1Length="*" PanePriority="Pane1">
       <TwoPaneView.Pane1>
-        <ListView x:Name="list" ItemsSource="{Binding Packages}" SelectedItem="{Binding SelectedPackage, Mode=TwoWay}">
+        <ListView ItemsSource="{Binding Packages}" SelectedItem="{Binding SelectedPackage, Mode=TwoWay}">
             <!-- ui 虚化 -->
           <ListView.ItemsPanel>
             <ItemsPanelTemplate>
@@ -366,7 +217,7 @@
             <ui:IsNotEqualStateTrigger Value="{Binding SelectedPackage, Mode=OneWay}" To="{x:Null}" />
           </VisualState.StateTriggers>
           <VisualState.Setters>
-            <Setter Target="MyTwoPaneView.PanePriority" Value="Pane2" />
+            <Setter Target="searchPackageTwoPaneView.PanePriority" Value="Pane2" />
           </VisualState.Setters>
         </VisualState>
       </VisualStateGroup>
@@ -382,13 +233,13 @@
             <!--  5.判断多条件满足情况后执行触发器  -->
             <lc:CompositeStateTrigger Operator="And" DataContext="{Binding}">
               <lc:NotEqualStateTrigger NotEqualTo="{x:Null}" Value="{Binding SelectedPackage, Mode=OneWay}" />
-              <lc:EqualsStateTrigger EqualTo="SinglePane" Value="{Binding Mode, ElementName=MyTwoPaneView, Mode=OneWay}" />
+              <lc:EqualsStateTrigger EqualTo="SinglePane" Value="{Binding Mode, ElementName=searchPackageTwoPaneView, Mode=OneWay}" />
             </lc:CompositeStateTrigger>
           </VisualState.StateTriggers>
           <VisualState.Setters>
-            <Setter Target="nav.MainCommandMode" Value="Action" />
-            <Setter Target="navbtn.Command" Value="{Binding ClearSelectedPackageCommand}" />
-            <Setter Target="navbtn.Visibility" Value="Visible" />
+            <Setter Target="searchPackageNav.MainCommandMode" Value="Action" />
+            <Setter Target="searchPackageNavbtn.Command" Value="{Binding ClearSelectedPackageCommand}" />
+            <Setter Target="searchPackageNavbtn.Visibility" Value="Visible" />
           </VisualState.Setters>
         </VisualState>
         <VisualState x:Name="navigation_noselected">
@@ -396,8 +247,8 @@
             <ui:IsEqualStateTrigger Value="{Binding SelectedPackage, Mode=OneWay}" To="{x:Null}" />
           </VisualState.StateTriggers>
           <VisualState.Setters>
-            <Setter Target="nav.MainCommandMode" Value="Back" />
-            <Setter Target="navbtn.Command" Value="{x:Null}" />
+            <Setter Target="searchPackageNav.MainCommandMode" Value="Back" />
+            <Setter Target="searchPackageNavbtn.Command" Value="{x:Null}" />
           </VisualState.Setters>
         </VisualState>
       </VisualStateGroup>

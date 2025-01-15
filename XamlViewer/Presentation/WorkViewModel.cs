@@ -18,6 +18,7 @@ public partial class WorkViewModel : ObservableObject, IDisposable
 
     //隐藏后编辑区长度缓存
     private GridLength? hideEditerLength;
+    private GridLength? hideViewerLength;
 
     private long lastWriteTimeTicks = 0;
     //xaml dataContext 数据
@@ -46,9 +47,11 @@ public partial class WorkViewModel : ObservableObject, IDisposable
             awaitTasks.Add(this.ReadFileAsync());
         }
 
-        Task.WaitAll(awaitTasks);
+        Task.WaitAll(awaitTasks.ToArray());
 
         await this.ReaderXamlAsync();
+
+        //SinglePaneChanged(this.main.ListDetailMode);
 
     }
 
@@ -104,6 +107,12 @@ public partial class WorkViewModel : ObservableObject, IDisposable
             if (SetProperty(ref field, value))
                 IsShowChanged(value);
         }
+    } = true;
+
+    public bool IsShowSplitter
+    {
+        get => field;
+        set => SetProperty(ref field, value);
     } = true;
 
     public FrameworkElement? DesignContent
@@ -180,6 +189,49 @@ public partial class WorkViewModel : ObservableObject, IDisposable
     } = 2;
 
 
+
+    public bool IsSplit
+    {
+        get => field;
+        set
+        {
+            if (SetProperty(ref field, value))
+                SplitViewChanged(value);
+        }
+    } = true;
+
+
+    public bool IsShowViewer
+    {
+        get => field;
+        set => SetProperty(ref field, value);
+    } = true;
+
+
+    //public bool ViewerShowValue
+    //{
+    //    get => field;
+    //    set
+    //    {
+    //        if (SetProperty(ref field, value) && !this.IsSplit)
+    //        {
+    //            //判断是否是拆分才做业务，如果是拆分，那么修改显示区的显示值不修改，否则修改，
+    //            this.IsShowViewer = value;
+    //        }
+    //    }
+    //}
+
+    public int WorkSelectedIndex
+    {
+        get => field;
+        set
+        {
+            if (SetProperty(ref field, value) && !this.IsSplit)
+                this.IsShowViewer = value == 2;
+        }
+    } = 0;
+
+
     #endregion
 
     #region 执行命令
@@ -228,6 +280,7 @@ public partial class WorkViewModel : ObservableObject, IDisposable
 
     private void OnSelectedShowEntityChanged(ShowEntity? newValue)
     {
+        if (newValue == null) return;
 
         //新值是否时响应模式，如果是且缓存不为空则用缓存替换（高宽可能已经改变了）
         if (!newValue!.IsOnlyRead && cache is not null)
@@ -256,6 +309,50 @@ public partial class WorkViewModel : ObservableObject, IDisposable
         var db = System.Text.Json.JsonSerializer.Deserialize<System.Dynamic.ExpandoObject>(value);
         dataContext = db!;
         if (this.DesignContent != null) this.DesignContent.DataContext = this.dataContext;
+    }
+
+
+    //public void SinglePaneChanged(bool value)
+    //{
+    //    if (value)
+    //    {
+    //        this.hideViewerLength = this.ViewerLength;
+    //        this.hideEditerLength = this.EditerLength;
+    //        //设置试图区域为0，编辑器最大
+    //        this.ViewerLength = new GridLength(0, GridUnitType.Pixel);
+    //        this.EditerLength = new GridLength(1, GridUnitType.Star);
+    //        this.IsShowSplitter = false;
+    //    }
+    //    else
+    //    {
+    //        //还原
+    //        this.ViewerLength = this.hideViewerLength ?? new GridLength(1, GridUnitType.Star);
+    //        this.EditerLength = this.hideEditerLength ?? new GridLength(1, GridUnitType.Star);
+    //        this.hideEditerLength = null;
+    //        this.hideViewerLength = null;
+    //        this.IsShowSplitter = true;
+    //    }
+    //}
+
+    public void SplitViewChanged(bool isSplit)
+    {
+        if (isSplit)
+        {
+            //如果是拆分，那么设计和编辑不在一个区域，否则在一个区域
+            this.DesignerRow = this.EditorRow == 2 ? 0 : 2;
+            this.ViewerLength = this.hideViewerLength ?? new GridLength(1, GridUnitType.Star);
+            this.hideViewerLength = null;
+            this.IsShowViewer = true;
+            this.WorkSelectedIndex = 0;
+            //this.ViewerShowValue = false;
+        }
+        else
+        {
+            this.DesignerRow = this.EditorRow;
+            this.hideViewerLength = this.ViewerLength;
+            this.ViewerLength = new GridLength(0, GridUnitType.Pixel);
+            this.IsShowViewer = this.WorkSelectedIndex == 2;
+        }
     }
 
 

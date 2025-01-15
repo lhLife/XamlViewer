@@ -14,5 +14,6 @@
 
         <LangVersion>preview</LangVersion>
         <CommunityToolkitMvvmVersion>8.4.0</CommunityToolkitMvvmVersion>
+        <UnoToolkitVersion>6.5.0-dev.88</UnoToolkitVersion>
     </PropertyGroup>
 </Project>

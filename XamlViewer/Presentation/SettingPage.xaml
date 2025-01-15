@@ -86,7 +86,7 @@
           <AppBarButton Command="{Binding LoadPackageCommand}"
                         Icon="{ui:FontIcon FontFamily={StaticResource SymbolThemeFontFamily},
                                            Glyph='&#xE826;'}"
-                        Label="加载包"  />
+                        Label="加载包" />
         </StackPanel>
       </controls:HeaderedTreeView.Header>
       <controls:HeaderedTreeView.ItemTemplate>

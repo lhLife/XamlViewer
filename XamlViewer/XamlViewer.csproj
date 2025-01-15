@@ -4,7 +4,8 @@
         <TargetFrameworks>net9.0-desktop</TargetFrameworks>
         <!--<TargetFrameworks>net9.0-windows10.0.22621</TargetFrameworks>-->
         <!--<TargetFrameworks>net9.0-android</TargetFrameworks>-->
-        <!-- <TargetFrameworks>net9.0-browserwasm</TargetFrameworks> -->
+         <!--<TargetFrameworks>net9.0-browserwasm</TargetFrameworks>--> 
+         <!--<TargetFrameworks>net9.0-ios</TargetFrameworks>--> 
         <OutputType>Exe</OutputType>
         <UnoSingleProject>true</UnoSingleProject>
 
@@ -59,7 +60,7 @@
         <EmbeddedResource Include="Assets\*.xml" />
     </ItemGroup>
     <ItemGroup>
-        <EmbeddedResource Include="Platforms\**\appsettings.*.json" DependentUpon="appsettings.json" /> 
+        <EmbeddedResource Include="Platforms\**\appsettings.*.json"/> 
     </ItemGroup>
 
     <ItemGroup>

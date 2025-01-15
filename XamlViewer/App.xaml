@@ -18,8 +18,13 @@
       <sys:Visibility x:Key="Collapsed">Collapsed</sys:Visibility>
       <converters:CollectionVisibilityConverter x:Key="CollectionVisibilityConverter" />
       <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-      <converters:EmptyObjectToObjectConverter x:Key="EmptyObjectToVisibilityConverter" EmptyValue="{StaticResource Collapsed}" NotEmptyValue="{StaticResource Visible}" />
+      <converters:EmptyObjectToObjectConverter x:Key="EmptyObjectToVisibilityConverter"
+                                               EmptyValue="{StaticResource Collapsed}"
+                                               NotEmptyValue="{StaticResource Visible}" />
+      <converters:EmptyStringToObjectConverter x:Key="EmptyStringToObjectConverter" EmptyValue="False" NotEmptyValue="True" />
+
       <lconverters:PercentageConverter x:Key="PercentageConverter" />
+      <lconverters:ReverseConverter x:Key="ReverseConverter" />
     </ResourceDictionary>
   </Application.Resources>
 
