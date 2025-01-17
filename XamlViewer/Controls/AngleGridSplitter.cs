@@ -21,6 +21,13 @@ public partial class AngleGridSplitter : GridSplitter
 
     protected override void OnManipulationDelta(ManipulationDeltaRoutedEventArgs e)
     {
+
+#if ANDROID || IOS
+        base.OnManipulationDelta(e);
+
+#else
+
+
         // We use Truncate here to provide 'snapping' points with the DragIncrement property
         // It works for both our negative and positive values, as otherwise we'd need to use
         // Ceiling when negative and Floor when positive to maintain the correct behavior.
@@ -72,7 +79,8 @@ public partial class AngleGridSplitter : GridSplitter
                 return;
             }
         }
-        //base.OnManipulationDelta(e);
+        
+#endif
     }
 
 
