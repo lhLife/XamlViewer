@@ -1,4 +1,3 @@
-using Uno.UI.HotDesign;
 
 namespace XamlViewer.Presentation;
 public partial class PackageInfoViewModel : ObservableObject

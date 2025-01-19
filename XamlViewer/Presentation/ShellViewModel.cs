@@ -1,5 +1,3 @@
-using Uno.Extensions.Navigation.Regions;
-
 namespace XamlViewer.Presentation;
 
 public class ShellViewModel

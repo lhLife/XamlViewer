@@ -1,7 +1,5 @@
 
 using System.Collections.ObjectModel;
-using System.Reflection.Metadata;
-using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
 using Uno.Extensions.Specialized;

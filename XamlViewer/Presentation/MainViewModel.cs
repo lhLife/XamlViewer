@@ -1,18 +1,10 @@
 using System.Collections.ObjectModel;
 using System.Reflection;
-using System.Runtime.Loader;
 using Microsoft.Extensions.Configuration;
 using Microsoft.UI.Windowing;
-using Newtonsoft.Json.Linq;
-using NuGet.Configuration;
-using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
-using Uno.Extensions;
 using Uno.Extensions.Specialized;
-using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
 using XamlViewer.Extensions;
-using XamlViewer.Models;
 
 namespace XamlViewer.Presentation;
 

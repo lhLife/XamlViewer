@@ -1,20 +1,12 @@
 using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
-using System.Reflection;
 using System.Runtime.Loader;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Newtonsoft.Json.Linq;
-using NuGet.Common;
 using NuGet.Frameworks;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
-using Uno.Extensions.Navigation;
 using Uno.Extensions.Specialized;
-using Uno.UI.RemoteControl.Messaging.IdeChannel;
 using XamlViewer.Extensions;
-using XamlViewer.Models;
 
 namespace XamlViewer.Presentation;
 public partial class SettingViewModel : ObservableObject

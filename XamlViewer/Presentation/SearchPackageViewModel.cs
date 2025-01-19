@@ -1,18 +1,7 @@
-
-
-using System;
 using System.Collections.ObjectModel;
-using System.IO.Compression;
-using CommunityToolkit.Common.Collections;
 using CommunityToolkit.WinUI.Collections;
-using Microsoft.VisualBasic;
-using NuGet.Common;
-using NuGet.Packaging;
 using NuGet.Packaging.Core;
-using NuGet.Protocol;
 using NuGet.Protocol.Core.Types;
-using NuGet.Versioning;
-using Windows.ApplicationModel;
 
 namespace XamlViewer.Presentation;
 public partial class SearchPackageViewModel : ObservableObject, CommunityToolkit.WinUI.Collections.IIncrementalSource<IPackageSearchMetadata>
