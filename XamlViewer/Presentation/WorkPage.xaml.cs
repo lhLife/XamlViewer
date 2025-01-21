@@ -8,10 +8,6 @@ public sealed partial class WorkPage : Page
     public WorkPage()
     {
         this.InitializeComponent();
-
-        var a = new NumberBox();
-        a.SmallChange = 0.1;
-        
     }
 
 
